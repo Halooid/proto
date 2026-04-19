@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package auth.v1;
+
+import "auth/v1/user.proto";
+
+option go_package = "halooid.com/proto/auth/v1;authv1";
+
+message ValidateTokenRequest {
+  string token = 1;
+}
+
+message ValidateTokenResponse {
+  bool is_valid = 1;
+  User user = 2;
+}
+
+message GetCurrentUserRequest {
+  // Empty, standard flow implies reading token from metadata instead of body
+}
+
+message GetCurrentUserResponse {
+  User user = 1;
+}
+
+message GetUserByIdRequest {
+  string id = 1;
+}
+
+message GetUserByIdResponse {
+  User user = 1;
+}
+
+message GetOrCreateUserRequest {
+  string external_id = 1;
+  string email = 2;
+  string username = 3;
+  string tenant_id = 4;
+}
+
+message GetOrCreateUserResponse {
+  User user = 1;
+}
+
+// AuthService is responsible for identity mapping and token validation interactions
+service AuthService {
+  // ValidateToken verifies a JWT and returns the parsed user record
+  rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
+  
+  // GetCurrentUser retrieves the user profile for the current authenticated user
+  rpc GetCurrentUser(GetCurrentUserRequest) returns (GetCurrentUserResponse);
+  
+  // GetUserById retrieves a user by their internal ID
+  rpc GetUserById(GetUserByIdRequest) returns (GetUserByIdResponse);
+  
+  // GetOrCreateUser ensures the user exists internally based on Keycloak external_id
+  rpc GetOrCreateUser(GetOrCreateUserRequest) returns (GetOrCreateUserResponse);
+}

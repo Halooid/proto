@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package auth.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "halooid.com/proto/auth/v1;authv1";
+
+message User {
+  string id = 1;
+  string external_id = 2; // e.g. keycloak sub
+  string email = 3;
+  string username = 4;
+  string tenant_id = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
