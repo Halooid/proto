@@ -36,6 +36,8 @@ message GetOrCreateUserRequest {
   string email = 2;
   string username = 3;
   string tenant_id = 4;
+  string first_name = 5;
+  string last_name = 6;
 }
 
 message GetOrCreateUserResponse {
@@ -72,6 +74,8 @@ message RegisterRequest {
   string username = 1;
   string email = 2;
   string password = 3;
+  string first_name = 4;
+  string last_name = 5;
 }
 
 message RegisterResponse {

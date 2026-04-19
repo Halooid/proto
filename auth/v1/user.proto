@@ -12,6 +12,8 @@ message User {
   string email = 3;
   string username = 4;
   string tenant_id = 5;
+  string first_name = 8;
+  string last_name = 9;
   google.protobuf.Timestamp created_at = 6;
   google.protobuf.Timestamp updated_at = 7;
 }
