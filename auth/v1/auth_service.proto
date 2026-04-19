@@ -68,10 +68,28 @@ message RefreshTokenResponse {
   string token_type = 5;
 }
 
+message RegisterRequest {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message RegisterResponse {
+  User user = 1;
+  string access_token = 2;
+  string refresh_token = 3;
+  int32 expires_in = 4;
+  int32 refresh_expires_in = 5;
+  string token_type = 6;
+}
+
 // AuthService is responsible for identity mapping and token validation interactions
 service AuthService {
   // Login authenticates a user with username/password and returns tokens
   rpc Login(LoginRequest) returns (LoginResponse);
+
+  // Register creates a new user account and returns tokens
+  rpc Register(RegisterRequest) returns (RegisterResponse);
 
   // RefreshToken exchanges a refresh token for a new access token
   rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
