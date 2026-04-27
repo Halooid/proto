@@ -1,0 +1,144 @@
+syntax = "proto3";
+
+package halooid.splix.v1;
+
+option go_package = "github.com/halooid/halooid/backend/splix-service/gen/go/splix/v1;splixv1";
+
+import "google/protobuf/timestamp.proto";
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc AddConnection(AddConnectionRequest) returns (AddConnectionResponse);
+  rpc ListConnections(ListConnectionsRequest) returns (ListConnectionsResponse);
+}
+
+service GroupService {
+  rpc CreateGroup(CreateGroupRequest) returns (CreateGroupResponse);
+  rpc AddGroupMember(AddGroupMemberRequest) returns (AddGroupMemberResponse);
+  rpc ListGroups(ListGroupsRequest) returns (ListGroupsResponse);
+}
+
+service ExpenseService {
+  rpc AddExpense(AddExpenseRequest) returns (AddExpenseResponse);
+  rpc GetUserBalances(GetUserBalancesRequest) returns (GetUserBalancesResponse);
+  rpc GetUserExpenses(GetUserExpensesRequest) returns (GetUserExpensesResponse);
+}
+
+// User Messages
+message User {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  string country_code = 4;
+  string default_currency_code = 5;
+  google.protobuf.Timestamp created_at = 6;
+}
+
+message CreateUserRequest {
+  string id = 1; // Keycloak ID
+  string email = 2;
+  string name = 3;
+  string country_code = 4;
+  string default_currency_code = 5;
+}
+
+message CreateUserResponse {
+  User user = 1;
+}
+
+message AddConnectionRequest {
+  string connected_user_id = 1;
+}
+
+message AddConnectionResponse {
+  bool success = 1;
+}
+
+message ListConnectionsRequest {}
+
+message ListConnectionsResponse {
+  repeated User connections = 1;
+}
+
+// Group Messages
+message Group {
+  string id = 1;
+  string name = 2;
+  string created_by = 3;
+  google.protobuf.Timestamp created_at = 4;
+  repeated string member_ids = 5;
+}
+
+message CreateGroupRequest {
+  string name = 1;
+  repeated string member_ids = 2;
+}
+
+message CreateGroupResponse {
+  Group group = 1;
+}
+
+message AddGroupMemberRequest {
+  string group_id = 1;
+  string user_id = 2;
+}
+
+message AddGroupMemberResponse {
+  bool success = 1;
+}
+
+message ListGroupsRequest {}
+
+message ListGroupsResponse {
+  repeated Group groups = 1;
+}
+
+// Expense Messages
+message Expense {
+  string id = 1;
+  string group_id = 2;
+  string description = 3;
+  string currency_code = 4;
+  double total_amount = 5;
+  string created_by = 6;
+  google.protobuf.Timestamp created_at = 7;
+  repeated ExpenseSplit splits = 8;
+}
+
+message ExpenseSplit {
+  string user_id = 1;
+  double paid_amount = 2;
+  double owed_amount = 3;
+}
+
+message AddExpenseRequest {
+  string group_id = 1; // Optional
+  string description = 2;
+  string currency_code = 3;
+  double total_amount = 4;
+  repeated ExpenseSplit splits = 5;
+}
+
+message AddExpenseResponse {
+  Expense expense = 1;
+}
+
+message UserBalance {
+  string user_id = 1;
+  string currency_code = 2;
+  double balance = 3; // positive means they are owed, negative means they owe
+}
+
+message GetUserBalancesRequest {}
+
+message GetUserBalancesResponse {
+  repeated UserBalance balances = 1;
+}
+
+message GetUserExpensesRequest {
+  string group_id = 1; // Optional
+}
+
+message GetUserExpensesResponse {
+  repeated Expense expenses = 1;
+}

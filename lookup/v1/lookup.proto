@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package halooid.lookup.v1;
+
+option go_package = "github.com/halooid/halooid/backend/lookup-service/gen/go/lookup/v1;lookupv1";
+
+service LookupService {
+  rpc GetLookupValues(GetLookupValuesRequest) returns (GetLookupValuesResponse);
+}
+
+message LookupValue {
+  string id = 1;
+  string code = 2;
+  string name = 3;
+  string metadata = 4; // JSON string
+}
+
+message GetLookupValuesRequest {
+  string lookup_key = 1; // e.g., "country", "currency"
+}
+
+message GetLookupValuesResponse {
+  repeated LookupValue values = 1;
+}
