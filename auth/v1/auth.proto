@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package auth.v1;
+
+import "auth/v1/user.proto";
+
+option go_package = "halooid.com/proto/auth/v1;authv1";
+
+message ValidateTokenRequest {
+  string access_token = 1;
+}
+
+message ValidateTokenResponse {
+  bool valid = 1;
+  User user = 2;
+}
+
+message GetCurrentUserRequest {
+  // Empty, standard flow implies reading token from metadata instead of body
+}
+
+message GetCurrentUserResponse {
+  User user = 1;
+}
+
+// AuthService is responsible for identity mapping and token validation interactions
+service AuthService {
+  // ValidateToken verifies a JWT and returns the parsed user record
+  rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
+  
+  // GetCurrentUser retrieves the user profile for the current authenticated user
+  rpc GetCurrentUser(GetCurrentUserRequest) returns (GetCurrentUserResponse);
+}
