@@ -25,7 +25,7 @@ service ExpenseService {
 }
 
 // User Messages
-message User {
+message SplixUser {
   string id = 1;
   string email = 2;
   string name = 3;
@@ -43,7 +43,7 @@ message CreateUserRequest {
 }
 
 message CreateUserResponse {
-  User user = 1;
+  SplixUser user = 1;
 }
 
 message AddConnectionRequest {
@@ -57,7 +57,7 @@ message AddConnectionResponse {
 message ListConnectionsRequest {}
 
 message ListConnectionsResponse {
-  repeated User connections = 1;
+  repeated SplixUser connections = 1;
 }
 
 // Group Messages
