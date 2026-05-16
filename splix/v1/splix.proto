@@ -8,6 +8,7 @@ import "google/protobuf/timestamp.proto";
 
 service UserService {
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
   rpc AddConnection(AddConnectionRequest) returns (AddConnectionResponse);
   rpc ListConnections(ListConnectionsRequest) returns (ListConnectionsResponse);
 }
@@ -43,6 +44,14 @@ message CreateUserRequest {
 }
 
 message CreateUserResponse {
+  SplixUser user = 1;
+}
+
+message GetUserRequest {
+  string id = 1; // Keycloak ID
+}
+
+message GetUserResponse {
   SplixUser user = 1;
 }
 
